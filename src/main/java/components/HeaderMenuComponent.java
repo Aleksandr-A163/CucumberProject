@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Компонент хедера с меню «Обучение».
+ * РљРѕРјРїРѕРЅРµРЅС‚ С…РµРґРµСЂР° СЃ РјРµРЅСЋ В«РћР±СѓС‡РµРЅРёРµВ».
  */
 public class HeaderMenuComponent {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    /** Кнопка «Обучение» в хедере */
-    private final By learningMenuButton = By.cssSelector("nav span[title='Обучение']");
-    /** Ссылки на категории внутри выпадающего меню */
+    /** РљРЅРѕРїРєР° В«РћР±СѓС‡РµРЅРёРµВ» РІ С…РµРґРµСЂРµ */
+    private final By learningMenuButton = By.cssSelector("nav span[title='РћР±СѓС‡РµРЅРёРµ']");
+    /** РЎСЃС‹Р»РєРё РЅР° РєР°С‚РµРіРѕСЂРёРё РІРЅСѓС‚СЂРё РІС‹РїР°РґР°СЋС‰РµРіРѕ РјРµРЅСЋ */
     private final By categoryLinkSelector =
         By.cssSelector("nav a.sc-1pgqitk-0.dNitgt[href*='/categories/']");
 
@@ -31,7 +31,7 @@ public class HeaderMenuComponent {
         this.wait   = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    /** Открывает меню «Обучение» */
+    /** РћС‚РєСЂС‹РІР°РµС‚ РјРµРЅСЋ В«РћР±СѓС‡РµРЅРёРµВ» */
     public void openLearningMenu() {
         wait.until(ExpectedConditions.elementToBeClickable(learningMenuButton))
             .click();
@@ -40,7 +40,7 @@ public class HeaderMenuComponent {
     }
 
     /**
-     * Кликает по случайной категории и возвращает её slug (последнюю часть href).
+     * РљР»РёРєР°РµС‚ РїРѕ СЃР»СѓС‡Р°Р№РЅРѕР№ РєР°С‚РµРіРѕСЂРёРё Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РµС‘ slug (РїРѕСЃР»РµРґРЅСЋСЋ С‡Р°СЃС‚СЊ href).
      */
     public String clickRandomCategory() {
         List<WebElement> links =

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import components.HeaderMenuComponent;
 
 /**
- * Страница «главная».
+ * РЎС‚СЂР°РЅРёС†Р° В«РіР»Р°РІРЅР°СЏВ».
  */
 public class MainPage {
 
@@ -18,20 +18,20 @@ public class MainPage {
         this.header = header;
     }
 
-    /** Открывает главную страницу OTUS */
+    /** РћС‚РєСЂС‹РІР°РµС‚ РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ OTUS */
     public void open() {
         driver.get("https://otus.ru");
     }
 
     /**
-     * Делегирует открытие меню «Обучение» в компонент.
+     * Р”РµР»РµРіРёСЂСѓРµС‚ РѕС‚РєСЂС‹С‚РёРµ РјРµРЅСЋ В«РћР±СѓС‡РµРЅРёРµВ» РІ РєРѕРјРїРѕРЅРµРЅС‚.
      */
     public void openLearningMenu() {
         header.openLearningMenu();
     }
 
     /**
-     * Делегирует выбор и клик случайной категории.
+     * Р”РµР»РµРіРёСЂСѓРµС‚ РІС‹Р±РѕСЂ Рё РєР»РёРє СЃР»СѓС‡Р°Р№РЅРѕР№ РєР°С‚РµРіРѕСЂРёРё.
      */
     public String clickRandomCategory() {
         return header.clickRandomCategory();

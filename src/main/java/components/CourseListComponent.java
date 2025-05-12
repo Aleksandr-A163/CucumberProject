@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Компонент для работы со списком курсов и меню.
+ * РљРѕРјРїРѕРЅРµРЅС‚ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃРѕ СЃРїРёСЃРєРѕРј РєСѓСЂСЃРѕРІ Рё РјРµРЅСЋ.
  */
 public class CourseListComponent {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    // Селектор кнопки "Обучение" в хедере
-    private final By learningMenuButton = By.cssSelector("nav span[title='Обучение']");
-    // Селектор ссылок на категории внутри меню
+    // РЎРµР»РµРєС‚РѕСЂ РєРЅРѕРїРєРё "РћР±СѓС‡РµРЅРёРµ" РІ С…РµРґРµСЂРµ
+    private final By learningMenuButton = By.cssSelector("nav span[title='РћР±СѓС‡РµРЅРёРµ']");
+    // РЎРµР»РµРєС‚РѕСЂ СЃСЃС‹Р»РѕРє РЅР° РєР°С‚РµРіРѕСЂРёРё РІРЅСѓС‚СЂРё РјРµРЅСЋ
     private final By categoryLinkSelector = By.cssSelector("nav a.sc-1pgqitk-0.dNitgt[href*='/categories/']");
 
-    // Селектор карточек курса
+    // РЎРµР»РµРєС‚РѕСЂ РєР°СЂС‚РѕС‡РµРє РєСѓСЂСЃР°
     private final By cardRoots = By.cssSelector("a.sc-zzdkm7-0");
     private List<CourseCardComponent> allCards;
 
@@ -35,7 +35,7 @@ public class CourseListComponent {
     }
 
     /**
-     * Открывает меню "Обучение" и дожидается появления категорий.
+     * РћС‚РєСЂС‹РІР°РµС‚ РјРµРЅСЋ "РћР±СѓС‡РµРЅРёРµ" Рё РґРѕР¶РёРґР°РµС‚СЃСЏ РїРѕСЏРІР»РµРЅРёСЏ РєР°С‚РµРіРѕСЂРёР№.
      */
     public void openLearningMenu() {
         wait.until(ExpectedConditions.elementToBeClickable(learningMenuButton))
@@ -44,14 +44,14 @@ public class CourseListComponent {
     }
 
     /**
-     * Возвращает элементы подменю (категории).
+     * Р’РѕР·РІСЂР°С‰Р°РµС‚ СЌР»РµРјРµРЅС‚С‹ РїРѕРґРјРµРЅСЋ (РєР°С‚РµРіРѕСЂРёРё).
      */
     public List<WebElement> getSubMenuItems() {
         return driver.findElements(categoryLinkSelector);
     }
 
     /**
-     * Ждёт появления карточек курса на странице и оборачивает их в CourseCardComponent.
+     * Р–РґС‘С‚ РїРѕСЏРІР»РµРЅРёСЏ РєР°СЂС‚РѕС‡РµРє РєСѓСЂСЃР° РЅР° СЃС‚СЂР°РЅРёС†Рµ Рё РѕР±РѕСЂР°С‡РёРІР°РµС‚ РёС… РІ CourseCardComponent.
      */
     public void waitForReady() {
         List<WebElement> roots = wait.until(
@@ -63,14 +63,14 @@ public class CourseListComponent {
     }
 
     /**
-     * Возвращает все компоненты карточек курсов.
+     * Р’РѕР·РІСЂР°С‰Р°РµС‚ РІСЃРµ РєРѕРјРїРѕРЅРµРЅС‚С‹ РєР°СЂС‚РѕС‡РµРє РєСѓСЂСЃРѕРІ.
      */
     public List<CourseCardComponent> getAllCards() {
         return allCards;
     }
 
     /**
-     * Возвращает список карточек с датой старта.
+     * Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РєР°СЂС‚РѕС‡РµРє СЃ РґР°С‚РѕР№ СЃС‚Р°СЂС‚Р°.
      */
     public List<CourseCardComponent> getCardsWithDates() {
         return allCards.stream()
@@ -79,7 +79,7 @@ public class CourseListComponent {
     }
 
     /**
-     * Возвращает заголовки всех курсов.
+     * Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РіРѕР»РѕРІРєРё РІСЃРµС… РєСѓСЂСЃРѕРІ.
      */
     public List<String> getAllTitles() {
         return allCards.stream()
@@ -88,13 +88,13 @@ public class CourseListComponent {
     }
 
     /**
-     * Кликает по курсу с указанным названием.
+     * РљР»РёРєР°РµС‚ РїРѕ РєСѓСЂСЃСѓ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РЅР°Р·РІР°РЅРёРµРј.
      */
     public void clickByName(String name) {
         getAllCards().stream()
             .filter(c -> c.getTitle().equalsIgnoreCase(name))
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Курс не найден: " + name))
+            .orElseThrow(() -> new RuntimeException("РљСѓСЂСЃ РЅРµ РЅР°Р№РґРµРЅ: " + name))
             .click();
     }
 }

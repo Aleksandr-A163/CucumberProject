@@ -18,9 +18,9 @@ public class CoursePage {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    // Актуальный селектор заголовка курса
+    // РђРєС‚СѓР°Р»СЊРЅС‹Р№ СЃРµР»РµРєС‚РѕСЂ Р·Р°РіРѕР»РѕРІРєР° РєСѓСЂСЃР°
     private final By titleSelector = By.cssSelector("h1.diGrSa");
-    // Новый селектор для <p> с днём и месяцем
+    // РќРѕРІС‹Р№ СЃРµР»РµРєС‚РѕСЂ РґР»СЏ <p> СЃ РґРЅС‘Рј Рё РјРµСЃСЏС†РµРј
     private static final String DATE_P_SELECTOR = "p.sc-1x9oq14-0.sc-3cb1l3-0.doSDez.dgWykw";
 
     @Inject
@@ -41,31 +41,31 @@ public class CoursePage {
     }
 
     /**
-     * Парсит дату старта курса из тега
-     * <p class="sc-1x9oq14-0 sc-3cb1l3-0 doSDez dgWykw">24 апреля</p>
-     * и дополняет годом, переданным в expectedYear.
+     * РџР°СЂСЃРёС‚ РґР°С‚Сѓ СЃС‚Р°СЂС‚Р° РєСѓСЂСЃР° РёР· С‚РµРіР°
+     * <p class="sc-1x9oq14-0 sc-3cb1l3-0 doSDez dgWykw">24 Р°РїСЂРµР»СЏ</p>
+     * Рё РґРѕРїРѕР»РЅСЏРµС‚ РіРѕРґРѕРј, РїРµСЂРµРґР°РЅРЅС‹Рј РІ expectedYear.
      *
-     * @param expectedYear год, который подставляем к дню и месяцу
-     * @return LocalDate собранный из текста <p> и expectedYear
+     * @param expectedYear РіРѕРґ, РєРѕС‚РѕСЂС‹Р№ РїРѕРґСЃС‚Р°РІР»СЏРµРј Рє РґРЅСЋ Рё РјРµСЃСЏС†Сѓ
+     * @return LocalDate СЃРѕР±СЂР°РЅРЅС‹Р№ РёР· С‚РµРєСЃС‚Р° <p> Рё expectedYear
      */
     public LocalDate getCourseStartDateJsoup(int expectedYear) {
-        // Ждём, пока <p> появится на странице
+        // Р–РґС‘Рј, РїРѕРєР° <p> РїРѕСЏРІРёС‚СЃСЏ РЅР° СЃС‚СЂР°РЅРёС†Рµ
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(DATE_P_SELECTOR)));
 
         String pageSource = driver.getPageSource();
         Document doc = Jsoup.parse(pageSource);
 
-        // Ищем именно <p> с днём и месяцем
+        // РС‰РµРј РёРјРµРЅРЅРѕ <p> СЃ РґРЅС‘Рј Рё РјРµСЃСЏС†РµРј
         Element dateElement = doc.selectFirst(DATE_P_SELECTOR);
         if (dateElement == null) {
             throw new IllegalStateException(
-                "Тег даты старта курса не найден: " + DATE_P_SELECTOR
+                "РўРµРі РґР°С‚С‹ СЃС‚Р°СЂС‚Р° РєСѓСЂСЃР° РЅРµ РЅР°Р№РґРµРЅ: " + DATE_P_SELECTOR
             );
         }
 
-        String dayMonth = dateElement.text().trim();          // например "24 апреля"
+        String dayMonth = dateElement.text().trim();          // РЅР°РїСЂРёРјРµСЂ "24 Р°РїСЂРµР»СЏ"
         String rawDate = String.format("%s, %d", dayMonth, expectedYear);
-        System.out.println(">>> Дата со страницы курса (Jsoup): " + rawDate);
+        System.out.println(">>> Р”Р°С‚Р° СЃРѕ СЃС‚СЂР°РЅРёС†С‹ РєСѓСЂСЃР° (Jsoup): " + rawDate);
 
         DateTimeFormatter formatter = DateTimeFormatter
                 .ofPattern("d MMMM, yyyy", new Locale("ru"));

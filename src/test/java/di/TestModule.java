@@ -12,11 +12,11 @@ import components.CourseListComponent;
 public class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-        // Провайдер — единый, но WebDriver без скопа
+        // РџСЂРѕРІР°Р№РґРµСЂ вЂ” РµРґРёРЅС‹Р№, РЅРѕ WebDriver Р±РµР· СЃРєРѕРїР°
         bind(WebDriver.class)
             .toProvider(WebDriverProvider.class);
 
-        // Страницы и компоненты — тоже без скопа
+        // РЎС‚СЂР°РЅРёС†С‹ Рё РєРѕРјРїРѕРЅРµРЅС‚С‹ вЂ” С‚РѕР¶Рµ Р±РµР· СЃРєРѕРїР°
         bind(MainPage.class);
         bind(CourseCatalogPage.class);
         bind(CoursePage.class);
