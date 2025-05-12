@@ -11,7 +11,7 @@ import utils.HighlightingListener;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
- * Guice Provider для WebDriver с кэшированием на уровне потока.
+ * Guice Provider РґР»СЏ WebDriver СЃ РєСЌС€РёСЂРѕРІР°РЅРёРµРј РЅР° СѓСЂРѕРІРЅРµ РїРѕС‚РѕРєР°.
  */
 @Singleton
 public class WebDriverProvider implements Provider<WebDriver> {
@@ -21,11 +21,11 @@ public class WebDriverProvider implements Provider<WebDriver> {
     @Override
     public WebDriver get() {
         if (tlDriver.get() == null) {
-            // 1) читаем свойство (chrome по умолчанию)
+            // 1) С‡РёС‚Р°РµРј СЃРІРѕР№СЃС‚РІРѕ (chrome РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
             String browser = System.getProperty("browser", "chrome").toLowerCase();
             WebDriver raw;
 
-            // 2) выбираем и настраиваем нужный драйвер
+            // 2) РІС‹Р±РёСЂР°РµРј Рё РЅР°СЃС‚СЂР°РёРІР°РµРј РЅСѓР¶РЅС‹Р№ РґСЂР°Р№РІРµСЂ
             switch (browser) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
@@ -42,7 +42,7 @@ public class WebDriverProvider implements Provider<WebDriver> {
                     throw new IllegalArgumentException("Unsupported browser: " + browser);
             }
 
-            // 3) навешиваем на сырый драйвер ваш HighlightingListener
+            // 3) РЅР°РІРµС€РёРІР°РµРј РЅР° СЃС‹СЂС‹Р№ РґСЂР°Р№РІРµСЂ РІР°С€ HighlightingListener
             WebDriver decorated = new EventFiringDecorator(new HighlightingListener())
                                         .decorate(raw);
 
@@ -51,7 +51,7 @@ public class WebDriverProvider implements Provider<WebDriver> {
         return tlDriver.get();
     }
 
-    /** Закрывает драйвер текущего потока и очищает ThreadLocal */
+    /** Р—Р°РєСЂС‹РІР°РµС‚ РґСЂР°Р№РІРµСЂ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР° Рё РѕС‡РёС‰Р°РµС‚ ThreadLocal */
     public static void quitDriver() {
         WebDriver driver = tlDriver.get();
         if (driver != null) {

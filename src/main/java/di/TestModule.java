@@ -1,7 +1,9 @@
 package di;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
 import driver.WebDriverProvider;
+import io.cucumber.guice.ScenarioScoped;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 import pages.CourseCatalogPage;
@@ -12,16 +14,20 @@ import components.CourseListComponent;
 public class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-        // Провайдер — единый, но WebDriver без скопа
+        // 1) РџСЂРѕРІР°Р№РґРµСЂ Р±СЂР°СѓР·РµСЂР° вЂ” РµРґРёРЅС‹Р№ singleton
+        bind(WebDriverProvider.class)
+            .in(Singleton.class);
+
+        // 2) WebDriver РІ СЂР°РјРєР°С… РѕРґРЅРѕРіРѕ Cucumber-СЃС†РµРЅР°СЂРёСЏ
         bind(WebDriver.class)
-            .toProvider(WebDriverProvider.class);
+            .toProvider(WebDriverProvider.class)
+            .in(ScenarioScoped.class);
 
-        // Страницы и компоненты — тоже без скопа
-        bind(MainPage.class);
-        bind(CourseCatalogPage.class);
-        bind(CoursePage.class);
-
-        bind(HeaderMenuComponent.class);
-        bind(CourseListComponent.class);
+        // 3) Р’СЃРµ СЃС‚СЂР°РЅРёС†С‹ Рё РєРѕРјРїРѕРЅРµРЅС‚С‹ С‚РѕР¶Рµ В«Р¶РёРІСѓС‚В» РІРЅСѓС‚СЂРё СЃС†РµРЅР°СЂРёСЏ
+        bind(MainPage.class).in(ScenarioScoped.class);
+        bind(CourseCatalogPage.class).in(ScenarioScoped.class);
+        bind(CoursePage.class).in(ScenarioScoped.class);
+        bind(HeaderMenuComponent.class).in(ScenarioScoped.class);
+        bind(CourseListComponent.class).in(ScenarioScoped.class);
     }
 }

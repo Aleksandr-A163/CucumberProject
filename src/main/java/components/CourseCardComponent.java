@@ -14,13 +14,13 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Компонент-обёртка для карточки курса с корректными CSS-селекторами.
+ * РљРѕРјРїРѕРЅРµРЅС‚-РѕР±С‘СЂС‚РєР° РґР»СЏ РєР°СЂС‚РѕС‡РєРё РєСѓСЂСЃР° СЃ РєРѕСЂСЂРµРєС‚РЅС‹РјРё CSS-СЃРµР»РµРєС‚РѕСЂР°РјРё.
  */
 public class CourseCardComponent {
     private final WebElement root;
     private final WebDriver driver;
 
-    // Селекторы из проекта SeleniumHomeWork
+    // РЎРµР»РµРєС‚РѕСЂС‹ РёР· РїСЂРѕРµРєС‚Р° SeleniumHomeWork
     private final By titleSelector    = By.cssSelector("h6 > div");
     private final By dateTextSelector = By.cssSelector("div[class*='sc-157icee-1'] > div");
     private final By categorySelector = By.cssSelector("p[class*='sc-1mes8t2-2']");
@@ -30,7 +30,7 @@ public class CourseCardComponent {
         this.root   = root;
     }
 
-    /** Заголовок курса */
+    /** Р—Р°РіРѕР»РѕРІРѕРє РєСѓСЂСЃР° */
     public String getTitle() {
         try {
             return root.findElement(titleSelector)
@@ -40,12 +40,12 @@ public class CourseCardComponent {
         }
     }
 
-    /** Пытается получить дату старта */
+    /** РџС‹С‚Р°РµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ РґР°С‚Сѓ СЃС‚Р°СЂС‚Р° */
     public Optional<LocalDate> tryGetStartDate() {
         try {
             String fullText = root.findElement(dateTextSelector)
                                   .getText().trim();
-            String datePart = fullText.split(" · ")[0];
+            String datePart = fullText.split(" В· ")[0];
             DateTimeFormatter fmt = DateTimeFormatter
                 .ofPattern("d MMMM, yyyy", new Locale("ru"));
             return Optional.of(LocalDate.parse(datePart, fmt));
@@ -54,7 +54,7 @@ public class CourseCardComponent {
         }
     }
 
-    /** Клик по карточке с ожиданием и скроллом */
+    /** РљР»РёРє РїРѕ РєР°СЂС‚РѕС‡РєРµ СЃ РѕР¶РёРґР°РЅРёРµРј Рё СЃРєСЂРѕР»Р»РѕРј */
     public void click() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(root));
@@ -68,17 +68,17 @@ public class CourseCardComponent {
         }
     }
 
-    /** Получить HTML компонента */
+    /** РџРѕР»СѓС‡РёС‚СЊ HTML РєРѕРјРїРѕРЅРµРЅС‚Р° */
     public String getInnerHtml() {
         return root.getAttribute("innerHTML");
     }
 
-    /** Разобрать HTML через Jsoup */
+    /** Р Р°Р·РѕР±СЂР°С‚СЊ HTML С‡РµСЂРµР· Jsoup */
     public Document getJsoupDocument() {
         return Jsoup.parse(getInnerHtml());
     }
 
-    /** Корневой WebElement карточки */
+    /** РљРѕСЂРЅРµРІРѕР№ WebElement РєР°СЂС‚РѕС‡РєРё */
     public WebElement getRoot() {
         return root;
     }

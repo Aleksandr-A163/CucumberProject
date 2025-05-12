@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Page Object для страницы каталога курсов.
+ * Page Object РґР»СЏ СЃС‚СЂР°РЅРёС†С‹ РєР°С‚Р°Р»РѕРіР° РєСѓСЂСЃРѕРІ.
  */
 public class CourseCatalogPage {
 

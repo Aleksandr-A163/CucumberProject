@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * DTO для информации о курсе.
+ * DTO РґР»СЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєСѓСЂСЃРµ.
  */
 public class CourseInfo {
     private final String name;
