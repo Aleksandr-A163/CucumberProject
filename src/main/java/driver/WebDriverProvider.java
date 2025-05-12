@@ -16,36 +16,39 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 @Singleton
 public class WebDriverProvider implements Provider<WebDriver> {
 
-    // Каждый поток (тест) будет держать свой драйвер
-    private static final ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
+    private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
 
     @Override
     public WebDriver get() {
-        WebDriver driver = tlDriver.get();
-        if (driver == null) {
-            // Меняем тип raw на WebDriver
+        if (tlDriver.get() == null) {
+            // 1) читаем свойство (chrome по умолчанию)
+            String browser = System.getProperty("browser", "chrome").toLowerCase();
             WebDriver raw;
 
-            String browser = System.getProperty("browser", "chrome").toLowerCase();
+            // 2) выбираем и настраиваем нужный драйвер
             switch (browser) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    raw = new ChromeDriver(new ChromeOptions());
+                    ChromeOptions chromeOpts = new ChromeOptions();
+                    raw = new ChromeDriver(chromeOpts);
                     break;
+
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
                     raw = new FirefoxDriver();
                     break;
+
                 default:
                     throw new IllegalArgumentException("Unsupported browser: " + browser);
             }
 
-            // Декорируем и сохраняем
-            driver = new EventFiringDecorator(new HighlightingListener())
-                         .decorate(raw);
-            tlDriver.set(driver);
+            // 3) навешиваем на сырый драйвер ваш HighlightingListener
+            WebDriver decorated = new EventFiringDecorator(new HighlightingListener())
+                                        .decorate(raw);
+
+            tlDriver.set(decorated);
         }
-        return driver;
+        return tlDriver.get();
     }
 
     /** Закрывает драйвер текущего потока и очищает ThreadLocal */

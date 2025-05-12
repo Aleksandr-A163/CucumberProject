@@ -1,7 +1,6 @@
 package pages;
 
 import com.google.inject.Inject;
-import components.CookieBannerComponent;
 import components.CourseListComponent;
 import components.CourseCardComponent;
 import org.openqa.selenium.WebDriver;
