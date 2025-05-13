@@ -13,9 +13,6 @@ public class GuiceInjectorFactory implements InjectorSource {
         new TestModule()
     );
 
-    // публичный конструктор нужен Cucumber-Guice
-    public GuiceInjectorFactory() {}
-
     @Override
     public Injector getInjector() {
         return injector;
