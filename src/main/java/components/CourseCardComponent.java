@@ -1,6 +1,7 @@
 package components;
 
 import org.jsoup.Jsoup;
+import com.google.inject.Inject;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,40 +22,59 @@ public class CourseCardComponent {
     private final WebDriver driver;
 
     // Селекторы из проекта SeleniumHomeWork
-    private final By titleSelector    = By.cssSelector("h6 > div");
-    private final By dateTextSelector = By.cssSelector("div[class*='sc-157icee-1'] > div");
-    private final By categorySelector = By.cssSelector("p[class*='sc-1mes8t2-2']");
+    private static final By TITLE_SELECTOR    = By.cssSelector("h6 > div");
+    private static final By DATE_TEXT_SELECTOR = By.cssSelector("div[class*='sc-157icee-1'] > div");
+    private static final By CATEGORY_SELECTOR  = By.cssSelector("p[class*='sc-1mes8t2-2']");
 
+    @Inject
     public CourseCardComponent(WebDriver driver, WebElement root) {
         this.driver = driver;
         this.root   = root;
     }
 
-    /** Заголовок курса */
+    /**
+     * Заголовок курса
+     */
     public String getTitle() {
         try {
-            return root.findElement(titleSelector)
+            return root.findElement(TITLE_SELECTOR)
                        .getText().trim();
         } catch (NoSuchElementException e) {
             return "";
         }
     }
 
-    /** Пытается получить дату старта */
+    /**
+     * Пытается получить дату старта
+     */
     public Optional<LocalDate> tryGetStartDate() {
         try {
-            String fullText = root.findElement(dateTextSelector)
+            String fullText = root.findElement(DATE_TEXT_SELECTOR)
                                   .getText().trim();
             String datePart = fullText.split(" · ")[0];
             DateTimeFormatter fmt = DateTimeFormatter
-                .ofPattern("d MMMM, yyyy", new Locale("ru"));
+                .ofPattern("d MMMM yyyy", new Locale("ru"));
             return Optional.of(LocalDate.parse(datePart, fmt));
         } catch (DateTimeParseException | NoSuchElementException e) {
             return Optional.empty();
         }
     }
 
-    /** Клик по карточке с ожиданием и скроллом */
+    /**
+     * Получить категорию курса
+     */
+    public String getCategory() {
+        try {
+            return root.findElement(CATEGORY_SELECTOR)
+                       .getText().trim();
+        } catch (NoSuchElementException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Клик по карточке с ожиданием и скроллом
+     */
     public void click() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(root));
@@ -68,17 +88,23 @@ public class CourseCardComponent {
         }
     }
 
-    /** Получить HTML компонента */
+    /**
+     * Получить HTML компонента
+     */
     public String getInnerHtml() {
         return root.getAttribute("innerHTML");
     }
 
-    /** Разобрать HTML через Jsoup */
+    /**
+     * Разобрать HTML через Jsoup
+     */
     public Document getJsoupDocument() {
         return Jsoup.parse(getInnerHtml());
     }
 
-    /** Корневой WebElement карточки */
+    /**
+     * Корневой WebElement карточки
+     */
     public WebElement getRoot() {
         return root;
     }

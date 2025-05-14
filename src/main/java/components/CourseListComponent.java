@@ -19,13 +19,14 @@ public class CourseListComponent {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    // Селектор кнопки "Обучение" в хедере
-    private final By learningMenuButton = By.cssSelector("nav span[title='Обучение']");
-    // Селектор ссылок на категории внутри меню
-    private final By categoryLinkSelector = By.cssSelector("nav a.sc-1pgqitk-0.dNitgt[href*='/categories/']");
+    // Селектор карточек курса (из SeleniumHomeWork)
+    private static final By COURSE_CARD_ROOTS = By.cssSelector("a.sc-zzdkm7-0");
 
-    // Селектор карточек курса
-    private final By cardRoots = By.cssSelector("a.sc-zzdkm7-0");
+    // Селектор кнопки "Обучение" в хедере (оставлен без изменений)
+    private static final By LEARNING_MENU_BUTTON = By.cssSelector("nav span[title='Обучение']");
+    // Селектор ссылок на категории внутри меню (оставлен без изменений)
+    private static final By CATEGORY_LINK_SELECTOR = By.cssSelector("nav a.sc-1pgqitk-0.dNitgt[href*='/categories/']");
+
     private List<CourseCardComponent> allCards;
 
     @Inject
@@ -38,16 +39,16 @@ public class CourseListComponent {
      * Открывает меню "Обучение" и дожидается появления категорий.
      */
     public void openLearningMenu() {
-        wait.until(ExpectedConditions.elementToBeClickable(learningMenuButton))
+        wait.until(ExpectedConditions.elementToBeClickable(LEARNING_MENU_BUTTON))
             .click();
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(categoryLinkSelector));
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(CATEGORY_LINK_SELECTOR));
     }
 
     /**
      * Возвращает элементы подменю (категории).
      */
     public List<WebElement> getSubMenuItems() {
-        return driver.findElements(categoryLinkSelector);
+        return driver.findElements(CATEGORY_LINK_SELECTOR);
     }
 
     /**
@@ -55,7 +56,7 @@ public class CourseListComponent {
      */
     public void waitForReady() {
         List<WebElement> roots = wait.until(
-            ExpectedConditions.visibilityOfAllElementsLocatedBy(cardRoots)
+            ExpectedConditions.visibilityOfAllElementsLocatedBy(COURSE_CARD_ROOTS)
         );
         this.allCards = roots.stream()
             .map(root -> new CourseCardComponent(driver, root))
@@ -73,7 +74,7 @@ public class CourseListComponent {
      * Возвращает список карточек с датой старта.
      */
     public List<CourseCardComponent> getCardsWithDates() {
-        return allCards.stream()
+        return getAllCards().stream()
             .filter(c -> c.tryGetStartDate().isPresent())
             .collect(Collectors.toList());
     }
@@ -82,7 +83,7 @@ public class CourseListComponent {
      * Возвращает заголовки всех курсов.
      */
     public List<String> getAllTitles() {
-        return allCards.stream()
+        return getAllCards().stream()
             .map(CourseCardComponent::getTitle)
             .collect(Collectors.toList());
     }
