@@ -55,7 +55,6 @@ public class CourseCatalogPage {
 
     /** Кликает по карточке курса с указанным названием */
     public void clickOnCourseByName(String name) {
-        courseList.waitForReady();
         courseList.clickByName(name);
     }
 
