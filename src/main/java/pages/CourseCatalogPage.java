@@ -24,7 +24,7 @@ public class CourseCatalogPage {
 
     private static final String URL = "https://otus.ru/catalog/courses";
     private static final By SEARCH_INPUT = By.cssSelector("input.sc-nrhq9g-0");
-    private static final By CARD_ROOTS    = By.cssSelector("a[href*='/lessons/']");
+    private static final By CARD_ROOTS    = By.cssSelector("a.sc-zzdkm7-0.fExLNW");
 
     @Inject
     public CourseCatalogPage(WebDriver driver,
@@ -55,6 +55,7 @@ public class CourseCatalogPage {
 
     /** Кликает по карточке курса с указанным названием */
     public void clickOnCourseByName(String name) {
+        courseList.waitForReady();
         courseList.clickByName(name);
     }
 
@@ -88,21 +89,25 @@ public class CourseCatalogPage {
             .collect(Collectors.toList());
     }
 
-    /** Вводит текст в строку поиска и ждёт фильтрации результатов */
-    public void enterSearchText(String text) {
-        WebElement input = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(SEARCH_INPUT)
-        );
-        input.clear();
-        input.sendKeys(text);
-        // ждём, пока отфильтруются карточки по новому селектору
-        wait.until(
-            ExpectedConditions.textToBePresentInElementLocated(CARD_ROOTS, text)
-        );
-    }
 
     /** Ждёт появления всех карточек курса через CourseListComponent */
     public void waitForCoursesToBeVisible() {
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(CARD_ROOTS));
+    }
+
+        public void waitForSearchInput() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(SEARCH_INPUT));
+    }
+
+    public void focusOnSearchInput() {
+        WebElement input = driver.findElement(SEARCH_INPUT);
+        input.click();
+    }
+
+    public void enterSearchText(String text) {
+        WebElement input = driver.findElement(SEARCH_INPUT);
+        input.clear();
+        input.sendKeys(text);
+        wait.until(ExpectedConditions.textToBePresentInElementValue(SEARCH_INPUT, text));
     }
 }

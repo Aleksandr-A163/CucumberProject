@@ -20,7 +20,7 @@ public class CourseListComponent {
     private final WebDriverWait wait;
 
    // Селектор карточек курса: все ссылки на уроки/курсы
-    private static final By COURSE_CARD_ROOTS = By.cssSelector("a[href*='/lessons/']");
+    private static final By COURSE_CARD_ROOTS = By.cssSelector("a.sc-zzdkm7-0.fExLNW");
 
     // Селектор кнопки "Обучение" в хедере (оставлен без изменений)
     private static final By LEARNING_MENU_BUTTON = By.cssSelector("nav span[title='Обучение']");

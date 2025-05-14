@@ -1,6 +1,7 @@
 package steps;
 
 import com.google.inject.Inject;
+import context.TestContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 import org.junit.jupiter.api.Assertions;
@@ -16,33 +17,49 @@ public class CourseSearchSteps {
     @Inject private WebDriver driver;
     @Inject private CourseCatalogPage catalogPage;
     @Inject private CoursePage coursePage;
+    @Inject private TestContext testContext;
 
-    private String selectedCourse;
+    private static final String COURSE_KEY = "selectedCourse";
 
     @Given("Я открываю каталог курсов")
     public void openCatalog() {
         driver.get("https://otus.ru/catalog/courses");
+    }
+
+
+    @When("Я устанавливаю курсор в строку поиска")
+    public void focusSearchInput() {
+        catalogPage.focusOnSearchInput();
+    }
+
+    @When("Я ввожу наименование случайного курса из списка:")
+    public void enterRandomCourseNameFromList(DataTable table) {
+        List<String> courses = table.asList();
+        String selectedCourse = courses.get(new Random().nextInt(courses.size()));
+        System.out.println(">>> Выбран курс: " + selectedCourse);
+        catalogPage.enterSearchText(selectedCourse);
+        testContext.getScenarioContext().set(COURSE_KEY, selectedCourse);
+    }
+
+    @And("Я дожидаюсь появления карточек курса")
+    public void waitForCourseCards() {
         catalogPage.waitForCoursesToBeVisible();
     }
 
-    @When("Я ввожу наименование курса в строку поиска")
-    public void enterCourseNameInSearch() {
-        catalogPage.enterSearchText(selectedCourse);
-    }
-
-    @When("Я выбираю случайный курс из списка:")
-    public void selectRandomCourse(DataTable table) {
-        List<String> courses = table.asList();
-        // выбираем курс до того, как вводим его в поиск
-        selectedCourse = courses.get(new Random().nextInt(courses.size()));
+    @And("Кликаю по карточке курса")
+    public void clickOnFoundCourseCard() {
+        String selectedCourse = testContext.getScenarioContext().get(COURSE_KEY, String.class);
+        if (selectedCourse == null || selectedCourse.isBlank()) {
+            throw new IllegalStateException("selectedCourse не найден в ScenarioContext!");
+        }
+        System.out.println(">>> Кликаем по карточке курса: " + selectedCourse);
         catalogPage.clickOnCourseByName(selectedCourse);
     }
 
-    @Then("Открывается страница выбранного курса")
-    public void verifyCoursePage() {
-        Assertions.assertTrue(
-            coursePage.isCorrectCourseOpened(selectedCourse),
-            "Открыт неверный курс. Ожидался: " + selectedCourse
-        );
+    @Then("Открыта верная карточка выбранного курса")
+    public void verifyCoursePageOpened() {
+        String selectedCourse = testContext.getScenarioContext().get(COURSE_KEY, String.class);
+        Assertions.assertTrue(coursePage.getCourseTitle().contains(selectedCourse),
+                "Название курса не совпадает");
     }
 }
