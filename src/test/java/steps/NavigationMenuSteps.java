@@ -1,12 +1,14 @@
 package steps;
 
 import com.google.inject.Inject;
+import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ScenarioScoped
 public class NavigationMenuSteps {
 
     @Inject private WebDriver driver;

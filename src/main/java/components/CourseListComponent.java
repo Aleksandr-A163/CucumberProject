@@ -19,8 +19,8 @@ public class CourseListComponent {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    // Селектор карточек курса (из SeleniumHomeWork)
-    private static final By COURSE_CARD_ROOTS = By.cssSelector("a.sc-zzdkm7-0");
+   // Селектор карточек курса: все ссылки на уроки/курсы
+    private static final By COURSE_CARD_ROOTS = By.cssSelector("a[href*='/lessons/']");
 
     // Селектор кнопки "Обучение" в хедере (оставлен без изменений)
     private static final By LEARNING_MENU_BUTTON = By.cssSelector("nav span[title='Обучение']");
@@ -55,12 +55,12 @@ public class CourseListComponent {
      * Ждёт появления карточек курса на странице и оборачивает их в CourseCardComponent.
      */
     public void waitForReady() {
-        List<WebElement> roots = wait.until(
-            ExpectedConditions.visibilityOfAllElementsLocatedBy(COURSE_CARD_ROOTS)
-        );
-        this.allCards = roots.stream()
-            .map(root -> new CourseCardComponent(driver, root))
-            .collect(Collectors.toList());
+       List<WebElement> roots = wait.until(
+           ExpectedConditions.visibilityOfAllElementsLocatedBy(COURSE_CARD_ROOTS)
+       );
+         this.allCards = roots.stream()
+             .map(root -> new CourseCardComponent(driver, root))
+             .collect(Collectors.toList());
     }
 
     /**

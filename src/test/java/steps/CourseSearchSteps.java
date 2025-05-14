@@ -25,9 +25,15 @@ public class CourseSearchSteps {
         catalogPage.waitForCoursesToBeVisible();
     }
 
+    @When("Я ввожу наименование курса в строку поиска")
+    public void enterCourseNameInSearch() {
+        catalogPage.enterSearchText(selectedCourse);
+    }
+
     @When("Я выбираю случайный курс из списка:")
     public void selectRandomCourse(DataTable table) {
         List<String> courses = table.asList();
+        // выбираем курс до того, как вводим его в поиск
         selectedCourse = courses.get(new Random().nextInt(courses.size()));
         catalogPage.clickOnCourseByName(selectedCourse);
     }
