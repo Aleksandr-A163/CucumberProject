@@ -21,8 +21,6 @@ public class CourseCardComponent {
     private final WebElement root;
     private final WebDriver driver;
 
-    // Селекторы из проекта SeleniumHomeWork
-    private static final By TITLE_SELECTOR    = By.cssSelector("h6 > div");
     private static final By DATE_TEXT_SELECTOR = By.cssSelector("div[class*='sc-157icee-1'] > div");
     private static final By CATEGORY_SELECTOR  = By.cssSelector("p[class*='sc-1mes8t2-2']");
 
@@ -33,13 +31,13 @@ public class CourseCardComponent {
     }
 
     /**
-     * Заголовок курса
+     * Заголовок курса, полученный через Jsoup
      */
     public String getTitle() {
         try {
-            return root.findElement(TITLE_SELECTOR)
-                       .getText().trim();
-        } catch (NoSuchElementException e) {
+            Document doc = getJsoupDocument();
+            return doc.select("h6 > div").text().trim(); // более надёжно
+        } catch (Exception e) {
             return "";
         }
     }
@@ -49,12 +47,19 @@ public class CourseCardComponent {
      */
     public Optional<LocalDate> tryGetStartDate() {
         try {
-            String fullText = root.findElement(DATE_TEXT_SELECTOR)
-                                  .getText().trim();
-            String datePart = fullText.split(" · ")[0];
+            String fullText = root
+                .findElement(DATE_TEXT_SELECTOR)
+                .getText().trim();
+
+            String datePart = fullText.split(" · ")[0]
+                                    .replace(",", "")
+                                    .trim();
+
             DateTimeFormatter fmt = DateTimeFormatter
                 .ofPattern("d MMMM yyyy", new Locale("ru"));
-            return Optional.of(LocalDate.parse(datePart, fmt));
+
+            LocalDate parsed = LocalDate.parse(datePart, fmt);
+            return Optional.of(parsed);
         } catch (DateTimeParseException | NoSuchElementException e) {
             return Optional.empty();
         }
@@ -88,23 +93,14 @@ public class CourseCardComponent {
         }
     }
 
-    /**
-     * Получить HTML компонента
-     */
     public String getInnerHtml() {
         return root.getAttribute("innerHTML");
     }
 
-    /**
-     * Разобрать HTML через Jsoup
-     */
     public Document getJsoupDocument() {
         return Jsoup.parse(getInnerHtml());
     }
 
-    /**
-     * Корневой WebElement карточки
-     */
     public WebElement getRoot() {
         return root;
     }

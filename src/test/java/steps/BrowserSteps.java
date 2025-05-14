@@ -16,8 +16,6 @@ public class BrowserSteps {
 
     @Given("установлен браузер")
     public void setBrowser() {
-        // Ничего не делаем: браузер уже передан через -Pbrowser=<name>
-        // Или System.setProperty("browser", ...) вызывали в другом месте
         String browser = System.getProperty("browser", "chrome");
         System.out.println(">>> Установлен browser=" + browser);
     }
@@ -32,7 +30,6 @@ public class BrowserSteps {
         // Ожидаемое из system property
         String expected = System.getProperty("browser", "chrome").toLowerCase();
 
-        // Реальный из capabilities
         HasCapabilities capDriver = (HasCapabilities) driver;
         Capabilities caps       = capDriver.getCapabilities();
         String actual           = caps.getBrowserName().toLowerCase();
