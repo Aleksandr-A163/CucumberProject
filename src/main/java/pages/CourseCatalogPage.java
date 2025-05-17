@@ -16,7 +16,7 @@ public class CourseCatalogPage extends BasePage {
 
     private final CourseListComponent courseList;
 
-    private static final By SEARCH_INPUT = By.cssSelector("input.sc-nrhq9g-0");
+    private static final By SEARCH_INPUT = By.cssSelector("input[type='search']");
 
     @Inject
     public CourseCatalogPage(WebDriver driver,
@@ -35,7 +35,6 @@ public class CourseCatalogPage extends BasePage {
 
     public void open() {
         super.open();
-        courseList.waitForReady();
     }
 
 
@@ -51,13 +50,11 @@ public class CourseCatalogPage extends BasePage {
 
     /** Возвращает заголовки курсов, стартующих не раньше указанной даты */
     public List<String> getCourseTitlesByDate(LocalDate date) {
-        return getAllCourseCardsWithDates().stream()
-            .filter(c -> c.tryGetStartDate()
-                          .filter(d -> !d.isBefore(date))
-                          .isPresent())
-            .map(CourseCardComponent::getTitle)
-            .distinct()
-            .collect(Collectors.toList());
+    return getAllCourseCardsWithDates().stream()
+        .filter(card -> card.startsOnOrAfter(date))
+        .map(CourseCardComponent::getTitle)
+        .distinct()
+        .collect(Collectors.toList());
     }
 
     /** Явно дождаться загрузки карточек */

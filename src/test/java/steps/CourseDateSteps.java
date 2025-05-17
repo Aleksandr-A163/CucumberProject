@@ -34,9 +34,7 @@ public class CourseDateSteps {
         List<CourseCardComponent> allCards = courseList.getCardsWithDates();
 
         List<CourseCardComponent> filteredCards = allCards.stream()
-            .filter(c -> c.tryGetStartDate()
-                          .filter(d -> !d.isBefore(expectedDate))
-                          .isPresent())
+            .filter(card -> card.startsOnOrAfter(expectedDate))
             .sorted(Comparator.comparing(c -> c.tryGetStartDate().orElse(LocalDate.MAX)))
             .collect(Collectors.toList());
 

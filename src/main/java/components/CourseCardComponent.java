@@ -21,7 +21,7 @@ public class CourseCardComponent {
     private final WebElement root;
     private final WebDriver driver;
 
-    private static final By DATE_TEXT_SELECTOR = By.cssSelector("div[class*='sc-157icee-1'] > div");
+    private static final By DATE_TEXT_SELECTOR = By.cssSelector("h6 + div > div");
     private static final By CATEGORY_SELECTOR  = By.cssSelector("p[class*='sc-1mes8t2-2']");
 
     @Inject
@@ -63,6 +63,12 @@ public class CourseCardComponent {
         } catch (DateTimeParseException | NoSuchElementException e) {
             return Optional.empty();
         }
+    }
+
+    public boolean startsOnOrAfter(LocalDate date) {
+    return tryGetStartDate()
+        .map(d -> !d.isBefore(date)) // true если дата курса >= date
+        .orElse(false);              // false если дата не найдена
     }
 
     /**

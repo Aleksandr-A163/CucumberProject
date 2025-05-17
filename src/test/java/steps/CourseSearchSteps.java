@@ -5,7 +5,6 @@ import context.TestContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.WebDriver;
 import pages.CourseCatalogPage;
 import pages.CoursePage;
 
@@ -14,16 +13,19 @@ import java.util.Random;
 
 public class CourseSearchSteps {
 
-    @Inject private WebDriver driver;
-    @Inject private CourseCatalogPage catalogPage;
-    @Inject private CoursePage coursePage;
-    @Inject private TestContext testContext;
+
+    @Inject
+    private CourseCatalogPage catalogPage;
+    @Inject
+    private CoursePage coursePage;
+    @Inject
+    private TestContext testContext;
 
     private static final String COURSE_KEY = "selectedCourse";
 
     @Given("Я открываю каталог курсов")
     public void openCatalog() {
-        driver.get("https://otus.ru/catalog/courses");
+        catalogPage.open();
     }
 
 
