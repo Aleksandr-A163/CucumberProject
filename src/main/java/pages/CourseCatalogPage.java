@@ -73,6 +73,5 @@ public class CourseCatalogPage extends BasePage {
         WebElement input = driver.findElement(SEARCH_INPUT);
         input.clear();
         input.sendKeys(text);
-        // Можно добавить ожидание при необходимости
     }
 }
