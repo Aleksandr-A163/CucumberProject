@@ -6,9 +6,9 @@ Scenario: Поиск и переход к курсу
   Given Я открываю каталог курсов
   And Я устанавливаю курсор в строку поиска
   When Я ввожу наименование случайного курса из списка:
-    | Kotlin QA Engineer   |
-    | QA Engineer. Basic   |
-    | Embedded Developer   |
+    | Product Marketing Manager в IT   |
+    | React.js Developer   |
+    | Python QA Engineer   |
     | Базы данных          |
   And Я дожидаюсь появления карточек курса
   And Кликаю по карточке курса

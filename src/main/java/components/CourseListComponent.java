@@ -23,7 +23,7 @@ public class CourseListComponent {
 
     /** Базовый селектор всех карточек */
     public static final By COURSE_CARD_ROOTS =
-        By.cssSelector("a.sc-zzdkm7-0.fExLNW");
+        By.cssSelector("a[href*='/lessons/']");
 
     /** Локатор кнопки "Обучение" в хедере */
     private static final By LEARNING_MENU_BUTTON =
@@ -59,7 +59,7 @@ public class CourseListComponent {
 
     /** Ждёт, пока карточки курсов станут видимыми на странице */
     public void waitForCourseCards() {
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(COURSE_CARD_ROOTS));
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(COURSE_CARD_ROOTS));
     }
 
     /**

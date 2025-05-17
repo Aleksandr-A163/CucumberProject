@@ -28,7 +28,6 @@ public class CourseSearchSteps {
         catalogPage.open();
     }
 
-
     @When("Я устанавливаю курсор в строку поиска")
     public void focusSearchInput() {
         catalogPage.focusOnSearchInput();

@@ -35,6 +35,7 @@ public class CourseCatalogPage extends BasePage {
 
     public void open() {
         super.open();
+        courseList.waitForCourseCards();
     }
 
 
