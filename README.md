@@ -15,16 +15,16 @@
 
 <div align="center">
 
-* **Java 17** (Toolchain)  
-* **Selenium WebDriver 4+**  
-* **WebDriverManager** (io.github.bonigarcia)  
-* **Cucumber BDD** (io.cucumber)  
-* **JUnit 5** (junit-jupiter, cucumber-junit-platform-engine)  
-* **Google Guice** (cucumber-guice)  
-* **Jsoup** (HTML-парсинг)  
-* **Gradle** (build automation)  
-* **Checkstyle** (статический анализ кода)  
-* **SpotBugs** (статический анализ кода)  
+**Java 17** (Toolchain)  
+**Selenium WebDriver 4+**  
+**WebDriverManager** (io.github.bonigarcia)  
+**Cucumber BDD** (io.cucumber)  
+**JUnit 5** (junit-jupiter, cucumber-junit-platform-engine)  
+**Google Guice** (cucumber-guice)  
+**Jsoup** (HTML-парсинг)  
+**Gradle** (build automation)  
+**Checkstyle** (статический анализ кода)  
+**SpotBugs** (статический анализ кода)  
 
 </div>
 
