@@ -45,7 +45,7 @@ CucumberProject/
 │  │  ├─ runners/           # Тестовый раннер (CucumberTest)
 │  │  └─ steps/             # Step Definitions (BrowserSteps, CourseSearchSteps, CourseDateSteps, NavigationMenuSteps, Hooks)
 │  └─ test/resources/
-│     ├─ features/          # Файлы сценариев (BrowserSelection, CourseSearch, CourseDate, NavigationMenu)
+│     ├─ features/          # Файлы сценариев (BrowserSelection, CourseSearch, CourseDate и т.д.)
 │     ├─ cucumber.properties
 │     └─ junit-platform.properties
 ├─ build.gradle
