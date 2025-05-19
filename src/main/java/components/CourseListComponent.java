@@ -23,11 +23,8 @@ public class CourseListComponent {
 
     /** Базовый селектор всех карточек */
     public static final By COURSE_CARD_ROOTS =
-        By.cssSelector("a[href*='/lessons/']");
+        By.xpath("//a[.//h6]");
 
-    /** Локатор кнопки "Обучение" в хедере */
-    private static final By LEARNING_MENU_BUTTON =
-        By.cssSelector("nav span[title='Обучение']");
 
     /** Селектор ссылок на категории внутри меню */
     private static final By CATEGORY_LINK_SELECTOR =
@@ -45,13 +42,6 @@ public class CourseListComponent {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    /** Открывает меню "Обучение" и ждёт появления категорий */
-    public void openLearningMenu() {
-        wait.until(ExpectedConditions.elementToBeClickable(LEARNING_MENU_BUTTON))
-            .click();
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(CATEGORY_LINK_SELECTOR));
-    }
-
     /** Возвращает список пунктов подменю категорий */
     public List<WebElement> getSubMenuItems() {
         return driver.findElements(CATEGORY_LINK_SELECTOR);
@@ -66,10 +56,9 @@ public class CourseListComponent {
      * Считывает **все** найденные на странице карточки
      */
     public List<CourseCardComponent> getAllCourseCards() {
-        List<WebElement> roots = driver.findElements(COURSE_CARD_ROOTS);
-        return roots.stream()
-                    .map(root -> new CourseCardComponent(driver, root))
-                    .collect(Collectors.toList());
+        return driver.findElements(COURSE_CARD_ROOTS).stream()
+            .map(root -> new CourseCardComponent(driver, root))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -78,13 +67,6 @@ public class CourseListComponent {
     public List<CourseCardComponent> getCardsWithDates() {
         return getAllCourseCards().stream()
             .filter(c -> c.tryGetStartDate().isPresent())
-            .collect(Collectors.toList());
-    }
-
-    /** Все названия курсов на странице */
-    public List<String> getAllTitles() {
-        return getAllCourseCards().stream()
-            .map(CourseCardComponent::getTitle)
             .collect(Collectors.toList());
     }
 
