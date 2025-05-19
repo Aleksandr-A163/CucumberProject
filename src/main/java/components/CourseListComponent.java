@@ -56,8 +56,10 @@ public class CourseListComponent {
      * Считывает **все** найденные на странице карточки
      */
     public List<CourseCardComponent> getAllCourseCards() {
+        waitForCourseCards();  // ваше presence-ожидание
         return driver.findElements(COURSE_CARD_ROOTS).stream()
-            .map(root -> new CourseCardComponent(driver, root))
+            .filter(e -> e.isDisplayed() && e.getSize().getHeight() > 0 && e.getSize().getWidth() > 0)
+            .map(e -> new CourseCardComponent(driver, e))
             .collect(Collectors.toList());
     }
 

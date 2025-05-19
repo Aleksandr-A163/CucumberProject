@@ -38,30 +38,25 @@ public class PriceFilterSteps {
         catalogPage.openPreparatory();
     }
 
-    @And("Я жду появления карточек курса")
-    public void waitForCards() {
-        catalogPage.getCourseList().waitForCourseCards();
-    }
+
 
     @When("Я собираю информацию о цене каждого курса")
     public void collectPrices() {
         courseInfos = new ArrayList<>();
 
-        // получаем все карточки на странице
-        List<CourseCardComponent> cards = catalogPage.getCourseList().getAllCourseCards();
-        for (CourseCardComponent card : cards) {
-            String title = card.getTitle();
+        int total = catalogPage.getCourseList().getAllCourseCards().size();
+        for (int i = 0; i < total; i++) {
+            // свежий список на каждой итерации
+            List<CourseCardComponent> cards =
+                catalogPage.getCourseList().getAllCourseCards();
+            CourseCardComponent card = cards.get(i);
 
-            // кликаем по карточке с нужным названием, чтобы открыть страницу курса
+            String title = card.getTitle();
             card.openCourse();
 
-            // ждём появления цены на странице курса и забираем её
             int price = coursePage.getPrice();
-
-            // сохраняем инфу
             courseInfos.add(new CourseInfo(title, price));
 
-            // возвращаемся в каталог курсов
             driver.navigate().back();
             catalogPage.getCourseList().waitForCourseCards();
         }

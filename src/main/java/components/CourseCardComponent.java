@@ -7,9 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -81,12 +80,10 @@ public class CourseCardComponent {
      * Открывает страницу курса кликом по корневому элементу (ссылке), дожидаясь интерактивности
      */
     public void openCourse() {
-        // скроллим до элемента
-        ((JavascriptExecutor)driver)
-            .executeScript("arguments[0].scrollIntoView({block: 'center'});", root);
-        // ждём, что ссылка станет кликабельной
-        wait.until(ExpectedConditions.elementToBeClickable(root));
-        root.click();
+        new Actions(driver)
+          .moveToElement(root)
+          .click()
+          .perform();
     }
 
     /**
