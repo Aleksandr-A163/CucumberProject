@@ -3,13 +3,9 @@ package components;
 import com.google.inject.Inject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.interactions.Actions;
-
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +23,8 @@ public class CourseCardComponent {
 
     /** Селектор блока с датой курса */
     private static final By DATE_TEXT_SELECTOR = By.cssSelector("h6 + div > div");
+    // локатор заголовка внутри карточки
+    private static final By TITLE_LOCATOR = By.cssSelector("h6");
 
     @Inject
     public CourseCardComponent(WebDriver driver, WebElement root) {
@@ -80,10 +78,19 @@ public class CourseCardComponent {
      * Открывает страницу курса кликом по корневому элементу (ссылке), дожидаясь интерактивности
      */
     public void openCourse() {
-        new Actions(driver)
-          .moveToElement(root)
-          .click()
-          .perform();
+        // 1) Скроллим весь <a> в центр экрана
+        ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", root);
+
+        // 2) Находим именно видимый <h6> внутри корня
+        WebElement title = root.findElement(TITLE_LOCATOR);
+
+        // 3) Ждём, пока этот <h6> станет кликабельным
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+            .until(ExpectedConditions.elementToBeClickable(title));
+
+        // 4) Кликаем по нему (не по самому <a>)
+        title.click();
     }
 
     /**

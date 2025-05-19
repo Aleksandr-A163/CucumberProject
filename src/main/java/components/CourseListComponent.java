@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.openqa.selenium.*;
+
 
 /**
  * Компонент для работы со списком курсов и меню.
@@ -42,11 +44,6 @@ public class CourseListComponent {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    /** Возвращает список пунктов подменю категорий */
-    public List<WebElement> getSubMenuItems() {
-        return driver.findElements(CATEGORY_LINK_SELECTOR);
-    }
-
     /** Ждёт, пока карточки курсов станут видимыми на странице */
     public void waitForCourseCards() {
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(COURSE_CARD_ROOTS));
@@ -56,9 +53,18 @@ public class CourseListComponent {
      * Считывает **все** найденные на странице карточки
      */
     public List<CourseCardComponent> getAllCourseCards() {
-        waitForCourseCards();  // ваше presence-ожидание
+        waitForCourseCards();
         return driver.findElements(COURSE_CARD_ROOTS).stream()
-            .filter(e -> e.isDisplayed() && e.getSize().getHeight() > 0 && e.getSize().getWidth() > 0)
+            // отбираем только те, у которых есть ненулевой размер и видимость
+            .filter(e -> {
+                try {
+                    return e.isDisplayed()
+                        && e.getSize().getWidth()  > 0
+                        && e.getSize().getHeight() > 0;
+                } catch (StaleElementReferenceException ex) {
+                    return false;
+                }
+            })
             .map(e -> new CourseCardComponent(driver, e))
             .collect(Collectors.toList());
     }
