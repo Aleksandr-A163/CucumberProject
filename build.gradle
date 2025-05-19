@@ -24,31 +24,30 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'io.cucumber:cucumber-java:7.22.1'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.22.1'
-
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-// Отключаем стандартный тест-таск
-tasks.named('test').configure {
-    enabled = false
+tasks.withType(Test).configureEach {
+    // Устанавливаем кодировку по умолчанию и пробрасываем browser
+    systemProperty 'file.encoding', 'UTF-8'
+    systemProperty 'browser', System.getProperty('browser', 'chrome')
+    jvmArgs '-Dfile.encoding=UTF-8'
 }
 
-// Явная таска для запуска только Cucumber–BDD
- task cucumber(type: Test) {
-     group = 'verification'
-     description = 'Запустить только Cucumber BDD сценарии'
-     useJUnitPlatform {
-         includeEngines 'cucumber'
-     }
-     systemProperty 'browser', project.findProperty('browser') ?: 'chrome'
-     jvmArgs '-Dfile.encoding=UTF-8'
-     systemProperty 'file.encoding', 'UTF-8'
-     testClassesDirs = sourceSets.test.output.classesDirs
-     classpath = sourceSets.test.runtimeClasspath
- }
+
+
+task cucumber(type: Test) {
+    group = 'verification'
+    description = 'Запустить только Cucumber BDD сценарии'
+    useJUnitPlatform {
+        includeEngines 'cucumber'
+    }
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+}
 
 check.dependsOn cucumber
 
