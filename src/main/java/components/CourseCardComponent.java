@@ -26,6 +26,9 @@ public class CourseCardComponent {
     // локатор заголовка внутри карточки
     private static final By TITLE_LOCATOR = By.cssSelector("h6");
 
+    /** Локатор для бейджа «Подготовительный курс» внутри карточки */
+    private static final By PREP_BADGE = By.xpath(".//p[contains(text(),'Подготовительный курс')]");
+
     @Inject
     public CourseCardComponent(WebDriver driver, WebElement root) {
         this.driver = driver;
@@ -91,6 +94,16 @@ public class CourseCardComponent {
 
         // 4) Кликаем по нему (не по самому <a>)
         title.click();
+    }
+
+    public boolean isPreparatory() {
+        try {
+            // ждём, что badge появится в DOM (если нужно)
+            wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(root, PREP_BADGE));
+            return root.findElement(PREP_BADGE).isDisplayed();
+        } catch (TimeoutException | NoSuchElementException e) {
+            return false;
+        }
     }
 
     /**

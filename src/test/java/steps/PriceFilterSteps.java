@@ -44,7 +44,10 @@ public class PriceFilterSteps {
         courseInfos.clear();
         int index = 0;
         while (true) {
-            List<CourseCardComponent> cards = catalogPage.getCourseList().getAllCourseCards();
+            // Отбираем только карточки с бейджем "Подготовительный курс"
+            List<CourseCardComponent> cards = catalogPage.getCourseList().getAllCourseCards().stream()
+                .filter(CourseCardComponent::isPreparatory)
+                .collect(Collectors.toList());
             if (index >= cards.size()) {
                 break;
             }
