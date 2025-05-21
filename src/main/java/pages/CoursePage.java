@@ -1,13 +1,15 @@
 package pages;
 
-import com.google.inject.Inject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.regex.Pattern;
+import io.cucumber.guice.ScenarioScoped;
+import com.google.inject.Inject;
 
 import java.time.Duration;
 
+@ScenarioScoped
 public class CoursePage {
 
     private final WebDriver driver;
@@ -20,7 +22,6 @@ public class CoursePage {
     // точный локатор блока с цифрами и ₽
     private static final By PRICE_VALUE =
         By.cssSelector("div.sc-153sikp-9.cKOPJA > div.sc-153sikp-11.gztHyx");
-
     @Inject
     public CoursePage(WebDriver driver) {
         this.driver = driver;
@@ -60,6 +61,5 @@ public class CoursePage {
         String digits = raw.replaceAll("\\D+", "");
         return Integer.parseInt(digits);
     }
-
 
 }

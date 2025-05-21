@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class PriceFilterSteps {
     private final CourseCatalogPage catalogPage;
     private final CoursePage coursePage;
+    @Inject
     private final WebDriver driver;
     private final List<CourseInfo> courseInfos = new ArrayList<>();
 

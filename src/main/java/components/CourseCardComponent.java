@@ -1,6 +1,7 @@
 package components;
 
 import com.google.inject.Inject;
+import io.cucumber.guice.ScenarioScoped;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
@@ -16,6 +17,7 @@ import java.util.Optional;
 /**
  * Компонент-обёртка для карточки курса с корректными CSS-селекторами.
  */
+@ScenarioScoped
 public class CourseCardComponent {
     private final WebDriver driver;
     private final WebElement root;

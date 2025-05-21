@@ -1,11 +1,12 @@
 package components;
 
-import com.google.inject.Inject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import io.cucumber.guice.ScenarioScoped;
+import com.google.inject.Inject;
 
 import java.time.Duration;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.openqa.selenium.*;
 /**
  * Компонент для работы со списком курсов и меню.
  */
+@ScenarioScoped
 public class CourseListComponent {
 
     private final WebDriver driver;
@@ -37,7 +39,6 @@ public class CourseListComponent {
         "//a[normalize-space(string(.//h6))='%s']";
 
     // --- /селекторы ---
-
     @Inject
     public CourseListComponent(WebDriver driver) {
         this.driver = driver;

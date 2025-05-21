@@ -3,10 +3,12 @@ package pages;
 import com.google.inject.Inject;
 import components.HeaderMenuComponent;
 import org.openqa.selenium.WebDriver;
+import io.cucumber.guice.ScenarioScoped;
 
 /**
  * Страница «главная».
  */
+@ScenarioScoped
 public class MainPage extends BasePage {
 
     private final HeaderMenuComponent header;

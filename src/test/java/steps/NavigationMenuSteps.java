@@ -1,8 +1,10 @@
 package steps;
 
-import com.google.inject.Inject;
 import io.cucumber.guice.ScenarioScoped;
-import io.cucumber.java.en.*;
+import com.google.inject.Inject;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 
@@ -11,9 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ScenarioScoped
 public class NavigationMenuSteps {
 
-    @Inject private WebDriver driver;
-    @Inject private MainPage mainPage;
+    private final WebDriver driver;
+    private final MainPage mainPage;
     private String selectedSlug;
+
+    @Inject
+    public NavigationMenuSteps(WebDriver driver, MainPage mainPage) {
+        this.driver = driver;
+        this.mainPage = mainPage;
+    }
 
     @Given("Я нахожусь на главной странице")
     public void openHomePage() {

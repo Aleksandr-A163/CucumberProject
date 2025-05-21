@@ -7,11 +7,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import io.cucumber.guice.ScenarioScoped;
 
-import java.time.LocalDate;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
+@ScenarioScoped
 public class CourseCatalogPage extends BasePage {
 
     private final CourseListComponent courseList;

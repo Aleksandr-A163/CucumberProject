@@ -1,6 +1,5 @@
 package steps;
 
-import com.google.inject.Inject;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -8,12 +7,21 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.Capabilities;
+import io.cucumber.guice.ScenarioScoped;
+import com.google.inject.Inject;
+import pages.MainPage;
 
+@ScenarioScoped
 public class BrowserSteps {
 
-    @Inject
-    private WebDriver driver;
+    private final WebDriver driver;
+    private final MainPage mainPage;
 
+    @Inject
+    public BrowserSteps(WebDriver driver, MainPage mainPage) {
+        this.driver = driver;
+        this.mainPage = mainPage;
+    }
     @Given("установлен браузер")
     public void setBrowser() {
         String browser = System.getProperty("browser", "chrome");

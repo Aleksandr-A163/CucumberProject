@@ -1,6 +1,5 @@
 package components;
 
-import com.google.inject.Inject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,7 +24,6 @@ public class HeaderMenuComponent {
     private final By categoryLinkSelector =
         By.cssSelector("nav a.sc-1pgqitk-0.dNitgt[href*='/categories/']");
 
-    @Inject
     public HeaderMenuComponent(WebDriver driver) {
         this.driver = driver;
         this.wait   = new WebDriverWait(driver, Duration.ofSeconds(10));

@@ -38,7 +38,6 @@ public class CourseSearchSteps {
     public void enterRandomCourseNameFromList(DataTable table) {
         List<String> courses = table.asList();
         selectedCourse = courses.get(new Random().nextInt(courses.size()));
-        System.out.println(">>> Выбран курс: " + selectedCourse);
         catalogPage.enterSearchText(selectedCourse);
     }
 
@@ -49,16 +48,14 @@ public class CourseSearchSteps {
 
     @And("Кликаю по карточке курса")
     public void clickOnFoundCourseCard() {
-        Assertions.assertNotNull(selectedCourse, "selectedCourse не был инициализирован");
-        System.out.println(">>> Кликаем по карточке курса: " + selectedCourse);
+        Assertions.assertNotNull(selectedCourse);
         catalogPage.clickOnCourseByName(selectedCourse);
     }
 
     @Then("Открыта верная карточка выбранного курса")
     public void verifyCoursePageOpened() {
         Assertions.assertTrue(
-            coursePage.getCourseTitle().contains(selectedCourse),
-            "Название курса не совпадает"
+            coursePage.getCourseTitle().contains(selectedCourse)
         );
     }
 }
