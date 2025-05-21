@@ -2,53 +2,44 @@ package steps;
 
 import components.CourseCardComponent;
 import components.CourseListComponent;
+import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import com.google.inject.Inject;
-import context.TestContext;
-import context.ScenarioContext;
 
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ScenarioScoped
 public class CourseDateSteps {
 
     private final CourseListComponent courseList;
-    private final ScenarioContext scenarioContext;
+    private LocalDate expectedDate;
+    private List<CourseCardComponent> filteredCards;
 
     @Inject
-    public CourseDateSteps(CourseListComponent courseList, TestContext testContext) {
+    public CourseDateSteps(CourseListComponent courseList) {
         this.courseList = courseList;
-        this.scenarioContext = testContext.getScenarioContext();
     }
 
     @When("Я фильтрую курсы по дате старта {string}")
     public void filterCoursesByStartDate(String date) {
-        LocalDate expectedDate = LocalDate.parse(date);
-        scenarioContext.set("expectedDate", expectedDate);
-
-        courseList.waitForCourseCards();
-        List<CourseCardComponent> allCards = courseList.getCardsWithDates();
-
-        List<CourseCardComponent> filteredCards = allCards.stream()
-            .filter(card -> card.startsOnOrAfter(expectedDate))
+        expectedDate = LocalDate.parse(date);
+        List<CourseCardComponent> allCards = courseList.getAllCourseCards();
+        filteredCards = allCards.stream()
+            .filter(card -> card.tryGetStartDate()
+                .map(d -> !d.isBefore(expectedDate))
+                .orElse(false))
             .sorted(Comparator.comparing(c -> c.tryGetStartDate().orElse(LocalDate.MAX)))
             .collect(Collectors.toList());
-
-        scenarioContext.set("filteredCards", filteredCards);
     }
 
     @Then("В консоль выведены названия и даты этих курсов")
     public void printCourseNamesAndDates() {
-        LocalDate expectedDate = scenarioContext.get("expectedDate", LocalDate.class);
-        Assertions.assertNotNull(expectedDate, "Операция фильтрации по дате не была выполнена, expectedDate == null");
-
-        List<CourseCardComponent> filteredCards = scenarioContext.get("filteredCards", List.class);
-        Assertions.assertNotNull(filteredCards, "filteredCards не были найдены в контексте");
-
+        Assertions.assertNotNull(filteredCards, "Фильтрация курсов не была выполнена, filteredCards == null");
         for (CourseCardComponent card : filteredCards) {
             card.tryGetStartDate().ifPresent(date -> {
                 System.out.println("Курс: " + card.getTitle() + " — дата начала: " + date);
