@@ -1,33 +1,21 @@
 package di;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
-import driver.WebDriverProvider;
+import com.google.inject.Provides;
 import io.cucumber.guice.ScenarioScoped;
 import org.openqa.selenium.WebDriver;
-import pages.MainPage;
-import pages.CourseCatalogPage;
-import pages.CoursePage;
-import components.HeaderMenuComponent;
-import components.CourseListComponent;
+import driver.WebDriverProvider;
 
 public class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-        // 1) Провайдер браузера — единый singleton
-        bind(WebDriverProvider.class)
-            .in(Singleton.class);
+        // без биндингов WebDriver — всё делаем через @Provides
+        bind(WebDriverProvider.class).in(com.google.inject.Singleton.class);
+    }
 
-        // 2) WebDriver в рамках одного Cucumber-сценария
-        bind(WebDriver.class)
-            .toProvider(WebDriverProvider.class)
-            .in(ScenarioScoped.class);
-
-        // 3) Все страницы и компоненты тоже «живут» внутри сценария
-        bind(MainPage.class).in(ScenarioScoped.class);
-        bind(CourseCatalogPage.class).in(ScenarioScoped.class);
-        bind(CoursePage.class).in(ScenarioScoped.class);
-        bind(HeaderMenuComponent.class).in(ScenarioScoped.class);
-        bind(CourseListComponent.class).in(ScenarioScoped.class);
+    @Provides
+    @ScenarioScoped
+    public WebDriver provideWebDriver(WebDriverProvider provider) {
+        return provider.get();
     }
 }
