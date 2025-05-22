@@ -19,7 +19,7 @@
 **Java 17** (Toolchain)  
 **Selenium WebDriver 4+**  
 **WebDriverManager** (io.github.bonigarcia)  
-**Cucumber BDD** (io.cucumber)  
+**Cucumber BDD version 6.11** (io.cucumber)  
 **JUnit 5** (junit-jupiter, cucumber-junit-platform-engine)  
 **Google Guice** (cucumber-guice)  
 **Jsoup** (HTML-парсинг)  
@@ -40,8 +40,7 @@ CucumberProject/
 │  │  ├─ driver/            # WebDriver Provider (WebDriverProvider, BrowserFactory, BrowserType)
 │  │  └─ utils/             # Утилиты (HighlightingListener)
 │  ├─ test/java/
-│  │  ├─ context/           # Cucumber контекст (ScenarioContext, TestContext)
-│  │  ├─ di/                # DI для тестов (TestModule, GuiceInjectorFactory)
+│  │  ├─ di/                # DI для тестов (TestModule)
 │  │  ├─ runners/           # Тестовый раннер (CucumberTest)
 │  │  └─ steps/             # Step Definitions (BrowserSteps, CourseSearchSteps, CourseDateSteps, NavigationMenuSteps, Hooks)
 │  └─ test/resources/
